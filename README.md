@@ -1,1 +1,3 @@
-# Stanford_CS193P_Coursework
+# Stanford-CS193P-Coursework
+
+Link: https://cs193p.sites.stanford.edu/2023
