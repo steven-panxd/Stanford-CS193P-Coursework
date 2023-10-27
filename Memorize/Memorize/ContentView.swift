@@ -9,15 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HStack {
-            CardView(isFaceUp: false)
-            CardView(isFaceUp: true)
-            CardView(isFaceUp: true)
-            CardView()
-        }
-        
-        .foregroundColor(.orange)
-        .padding()
+        Text("Hello")
     }
 }
 
