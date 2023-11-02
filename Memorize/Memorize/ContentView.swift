@@ -8,56 +8,116 @@
 import SwiftUI
 
 struct ContentView: View {
-//    let emojis: [String] = ["👻", "🎃", "🕷️", "😈"]
-    let emojis: Array<String> = ["👻", "🎃", "🕷️", "😈", "👽", "🕸️", "🧙", "🙀", "👹", "😱", "☠️", "🍭"]
-    @State var cardCount = 4;
+//    let halloweenEmojis: Array<String> = ["👻", "🎃", "🕷️", "😈", "👽", "🕸️", "🧙", "🙀", "👹", "😱", "☠️", "🍭"]
+//    let vehicleEmojis: Array<String> = ["✈️", "🚀", "🚗", "🛵", "🚜", "🚁", "🚤", "🚒", "🚓", "🚄", "🛳️", "🚖"]
+//    let faceEmojis: Array<String> = ["😀", "😲", "🤢", "☺️", "😇", "🙃", "🥰", "😡", "😢", "🤬", "🥵", "🤧"]
+        let halloweenEmojis: Array<String> = ["👻", "🎃", "🕷️", "😈", "👽"]
+        let vehicleEmojis: Array<String> = ["✈️", "🚀", "🚗", "🛵", "🚜"]
+        let faceEmojis: Array<String> = ["😀", "😲", "🤢", "☺️", "😇"]
+    
+    @State var emojis: Array<String> = []
+    @State var currentThemeName = themeNames.halloween
+    @State var themeColor = Color.orange
+    @State var cardCount = 0
+    
+    
+    var cardWidth: CGFloat {
+        CGFloat(60 - cardCount / 3)
+    }
+
+    enum themeNames {
+        case halloween
+        case vehicle
+        case face
+    }
     
     var body: some View {
         VStack{
+            title
             ScrollView {
                 cards
             }
             Spacer()
-            cardCountAdjusters
+            ThemeSwichers
         }
         .padding()
     }
     
-    var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
-            ForEach(0..<self.cardCount, id: \.self) {
-                index in
-                CardView(content: emojis[index])
-                    .aspectRatio(2/3, contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-            }
-        }.foregroundColor(.orange)
+    var title: some View {
+        Text("Memorize!").font(.largeTitle)
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
+    var cards: some View {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: self.cardWidth))]) {
+            ForEach(0..<self.emojis.count, id: \.self) {
+                index in
+                CardView(content: self.emojis[index])
+                    .aspectRatio(2/3, contentMode: .fit)
+            }
+        }.foregroundColor(self.themeColor)
+    }
+    
+    
+    var ThemeSwichers: some View {
+        HStack(spacing: 15) {
+            halloweenThemeSwicher
+            vehicleThemeSwicher
+            faceThemeSwicher
         }
         .imageScale(.large)
-        .font(.largeTitle)
     }
     
-    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
-        Button(action: {
-            self.cardCount += offset
+    func themeSwicher(themeName: themeNames, symbol: String, text: String) -> some View {
+        return Button(action: {
+            self.emojis.removeAll()  // remove all existing emojis
+            self.cardCount = 0
+            
+            switch themeName {
+            case .face:
+                for item: String in self.faceEmojis {
+                    for _ in 0..<Int.random(in: 2...4) {
+                        self.emojis += [item, item]
+                        self.cardCount += 2
+                    }
+                }
+                self.themeColor = Color.yellow
+            case .vehicle:
+                for item: String in self.vehicleEmojis {
+                    for _ in 0..<Int.random(in: 1...2) {
+                        self.emojis += [item, item]
+                        self.cardCount += 2
+                    }
+                }
+                self.themeColor = Color.red
+            default:
+                for item: String in self.halloweenEmojis {
+                    for _ in 0..<Int.random(in: 2...4) {
+                        self.emojis += [item, item]
+                        self.cardCount += 2
+                    }
+                }
+                self.themeColor = Color.orange
+            }
+            
+            self.emojis.shuffle()
         }, label: {
-            Image(systemName: symbol)
+            VStack(alignment: .center) {
+                Image(systemName: symbol)
+                Text(text)
+            }
         })
-        .disabled(self.cardCount + offset > self.emojis.count || self.cardCount + offset < 1)
     }
     
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
+    var halloweenThemeSwicher: some View {
+        themeSwicher(themeName: .halloween, symbol: "moon", text: "Halloween")
     }
     
-    var cardAdder: some View {
-        cardCountAdjuster(by: 1, symbol: "rectangle.stack.badge.plus.fill")
+    var vehicleThemeSwicher: some View {
+        themeSwicher(themeName: .vehicle, symbol: "car", text: "Vehicle")
+    }
+    
+    var faceThemeSwicher: some View {
+        themeSwicher(themeName: .face, symbol: "face.smiling", text: "Face")
     }
 }
 
