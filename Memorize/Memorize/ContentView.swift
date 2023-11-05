@@ -22,7 +22,7 @@ struct ContentView: View {
     
     
     var cardWidth: CGFloat {
-        CGFloat(60 - cardCount / 3)
+        CGFloat(60 - (Double(cardCount) / 2.5))
     }
 
     enum themeNames {
@@ -83,7 +83,7 @@ struct ContentView: View {
                 self.themeColor = Color.yellow
             case .vehicle:
                 for item: String in self.vehicleEmojis {
-                    for _ in 0..<Int.random(in: 1...2) {
+                    for _ in 0..<Int.random(in: 2...4) {
                         self.emojis += [item, item]
                         self.cardCount += 2
                     }
