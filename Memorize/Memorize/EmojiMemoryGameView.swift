@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct EmojiMemoryGameView: View {
+    var viewModel: EmojiMemoryGame
+    
 //    let halloweenEmojis: Array<String> = ["👻", "🎃", "🕷️", "😈", "👽", "🕸️", "🧙", "🙀", "👹", "😱", "☠️", "🍭"]
 //    let vehicleEmojis: Array<String> = ["✈️", "🚀", "🚗", "🛵", "🚜", "🚁", "🚤", "🚒", "🚓", "🚄", "🛳️", "🚖"]
 //    let faceEmojis: Array<String> = ["😀", "😲", "🤢", "☺️", "😇", "🙃", "🥰", "😡", "😢", "🤬", "🥵", "🤧"]
@@ -154,5 +156,5 @@ struct CardView: View {
 
 
 #Preview {
-    ContentView()
+    EmojiMemoryGameView()
 }
